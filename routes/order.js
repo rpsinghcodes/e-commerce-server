@@ -9,10 +9,8 @@ router.post("/order", async (req, res) => {
     const token = req.headers.authorization.split(" ")[1]; // Extract user ID from Bearer token
     const isValid = validateJSONToken(token);
     const userId = isValid.data[0].id;
-    console.log('isValid: ', userId);
     const { data } = req.body;
     // console.log(data);
-    console.log("data.info: ", data.info);
     const { name, mobileNumber, pincode, address, modeOfPayment } = data.info;
     
    data?.product.map(async (p) => {
@@ -55,11 +53,11 @@ router.post('/update-order', async (req, res) => {
     const token = req.headers.authorization.split(" ")[1]; // Extract user ID from Bearer token
     const isValid = validateJSONToken(token);
     const {orderId} = req.body;
-    console.log('req.body: ', req.body);
-    console.log(isValid);
-    const sellerId = isValid.data[0].id
-    console.log('sellerId', sellerId)
-    console.log('orderId: ', orderId);
+    
+    
+    const sellerId = isValid.data[0].seller_id
+    
+    
     await connection.promise().query(`UPDATE orders SET orderStatus='Shipped' WHERE order_id= ? AND seller_id= ? `, [orderId, sellerId]);
     const [data] = await connection.promise().query(`SELECT * FROM orders WHERE seller_id = ? `, [sellerId]);
     res.status(200).json({success: true, message: isValid, data});
@@ -76,11 +74,10 @@ router.get("/order/token/:token/seller_id/:seller_id", async (req, res) => {
     if (!isValid) {
        res.status(404).json({ success: false, message: "Access Denied" });
     } else {
-      console.log(`token: ${token}\nseller_id: ${seller_id}`);
       const [data] = await connection
         .promise()
         .query(`SELECT * FROM orders  WHERE seller_id=?;`, [seller_id]);
-      console.log(data);
+      
       res.status(200).json({ success: true, message: "Access Granted", data });
     }
   } catch (err) {

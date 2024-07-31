@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -6,7 +8,9 @@ const db = require('./DB/db');
 
 const authRoutes = require("./routes/auth");
 const cartRoutes = require("./routes/cart");
+const wishlist = require("./routes/wishlist");
 const orderRoutes = require('./routes/order');
+const productRoutes = require('./routes/products');
 app.use(bodyParser.json({limit:'50mb'}));
 
 app.use(cors());
@@ -14,6 +18,8 @@ app.use(cors());
 app.use(authRoutes);
 app.use(cartRoutes);
 app.use(orderRoutes);
+app.use(productRoutes);
+app.use(wishlist);
 
 
 app.get("/",async (req, res) => {
