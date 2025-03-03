@@ -27,7 +27,7 @@ router.post("/addproduct", async (req, res) => {
           // Update if id is provided
           // update if sellername and valid 
           
-          const updateQuery = `UPDATE Products SET title=?, description=?, price=?, category=?, image=?, created_at=NOW() WHERE seller_id= ? AND id=?`;
+          const updateQuery = `UPDATE products SET title=?, description=?, price=?, category=?, image=?, created_at=NOW() WHERE seller_id= ? AND id=?`;
           const [updatedDataResult] = await connection
             .promise()
             .query(updateQuery, [title, description, price, category, image, seller_id,  id]);
@@ -43,7 +43,7 @@ router.post("/addproduct", async (req, res) => {
             updatedSellerProducts
           });
         } else {
-          const query = `INSERT INTO Products ( seller_id,  title, description, price, category, image, sellerName) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+          const query = `INSERT INTO products ( seller_id,  title, description, price, category, image, sellerName) VALUES (?, ?, ?, ?, ?, ?, ?)`;
           await connection
             .promise()
             .query(query, [
